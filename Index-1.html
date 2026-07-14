@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robinchubbs | Robinhood Chain NFT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .glow { text-shadow: 0 0 25px #22d3ee; }
+  </style>
+</head>
+<body class="bg-black text-white">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-cyan-900">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <img src="https://i.ibb.co/Q3B5LKV5/aaaa3496-d60c-44bd-8f84-12a4d64e3640.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <span class="text-2xl font-bold">Robinchubbs</span>
+      </div>
+      <a href="https://x.com/robinchubbs" target="_blank" 
+         class="flex items-center gap-2 bg-black border border-gray-700 hover:border-cyan-500 px-5 py-2 rounded-xl text-sm font-medium">
+        <span class="text-xl">𝕏</span>
+        <span>Follow Us</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="min-h-screen flex items-center justify-center pt-20 bg-gradient-to-br from-black via-purple-950 to-black">
+    <div class="text-center px-6 max-w-4xl mx-auto">
+      <img src="https://i.ibb.co/Q3B5LKV5/aaaa3496-d60c-44bd-8f84-12a4d64e3640.jpg" alt="Robinchubbs" class="w-48 mx-auto mb-8 rounded-3xl">
+      <h1 class="text-6xl md:text-7xl font-bold glow mb-4">ROBINCHUBBS</h1>
+      <p class="text-3xl text-cyan-400 mb-6">ROBINHOOD CHAIN • 4,444 SUPPLY</p>
+      <a href="#whitelist" class="inline-block bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold text-xl px-12 py-5 rounded-2xl hover:scale-105 transition">
+        JOIN WHITELIST
+      </a>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="py-20 px-6 bg-zinc-950">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-5xl font-bold mb-10">OUR VISION</h2>
+      <p class="text-lg leading-relaxed text-gray-300">
+        Robinchubbs is more than just a community-driven project. It is a growing ecosystem built on the Robinhood network, 
+        combining creativity, digital ownership, and community participation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Whitelist Form -->
+  <section id="whitelist" class="py-24 px-6 bg-black">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-5xl font-bold mb-4">JOIN THE WHITELIST</h2>
+        <p class="text-gray-400">Spots are highly limited. Secure your place in the ecosystem now.</p>
+      </div>
+
+      <form id="wlForm" class="space-y-8 bg-zinc-900 p-10 rounded-3xl border border-cyan-900">
+        <div>
+          <label class="block text-sm mb-3 font-medium">X / Twitter Handle</label>
+          <input type="text" id="twitter" required placeholder="@username" 
+                 class="w-full bg-black border border-gray-700 rounded-2xl px-6 py-5 text-lg focus:outline-none focus:border-cyan-500">
+        </div>
+        <div>
+          <label class="block text-sm mb-3 font-medium">EVM Wallet Address</label>
+          <input type="text" id="wallet" required placeholder="0x..." 
+                 class="w-full bg-black border border-gray-700 rounded-2xl px-6 py-5 text-lg focus:outline-none focus:border-cyan-500">
+        </div>
+        <button type="submit" 
+                class="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-black font-bold text-xl py-6 rounded-2xl hover:scale-105 transition">
+          SUBMIT APPLICATION
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const SUPABASE_URL = "https://uydolcvxcaxqlzwvciha.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5ZG9sY3Z4Y2F4cWx6d3ZjaWhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNTA0ODQsImV4cCI6MjA5OTYyNjQ4NH0.Geb-6EublNY5es6grDhp66djcTUuPIgQUuaX-WNnzuc";
+
+    document.getElementById('wlForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const twitter = document.getElementById('twitter').value.trim();
+      const wallet = document.getElementById('wallet').value.trim();
+
+      if (!twitter || !wallet) {
+        alert("Please fill in all fields!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/whitelist`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify({ twitter, wallet })
+        });
+
+        if (res.ok) {
+          alert("✅ Success! Thank you for joining Robinchubbs Whitelist.");
+          e.target.reset();
+        } else {
+          alert("Something went wrong. Please try again later.");
+        }
+      } catch (error) {
+        alert("Connection error. Please check your internet.");
+      }
+    });
+  </script>
+</body>
+</html>
